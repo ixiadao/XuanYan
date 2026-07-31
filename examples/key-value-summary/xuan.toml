@@ -1,0 +1,6 @@
+[package]
+name = "key-value-summary"
+entry = "main.xy"
+
+[dependencies]
+std = { path = "../../stdlib" }

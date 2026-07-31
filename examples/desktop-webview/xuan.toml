@@ -1,0 +1,6 @@
+[package]
+name = "desktop-webview"
+entry = "main.xy"
+
+[dependencies]
+std = { path = "../../stdlib" }

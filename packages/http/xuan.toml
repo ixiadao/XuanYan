@@ -1,0 +1,6 @@
+[package]
+name = "xuanyan-http"
+entry = "src/lib.xy"
+
+[dependencies]
+std = { path = "../../stdlib" }

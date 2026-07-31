@@ -1,0 +1,11 @@
+导入 src::lib::路径扩展名是;
+
+公开 函数 路径行为正确() -> 布尔 {
+    如果 非 路径扩展名是("archive.tar.gz", "gz") {
+        返回 假;
+    }
+    如果 路径扩展名是("archive.tar.gz", "tar.gz") 或 路径扩展名是("archive.tar.gz", "GZ") 或 路径扩展名是("archive.tar.gz", ".gz") 或 路径扩展名是("README", "") 或 路径扩展名是(".env", "env") {
+        返回 假;
+    }
+    路径扩展名是("report.", "")
+}

@@ -1,0 +1,6 @@
+[package]
+name = "recursive-extension-file-copy"
+entry = "main.xy"
+
+[dependencies]
+std = { path = "../../stdlib" }

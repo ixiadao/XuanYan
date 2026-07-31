@@ -1,0 +1,3 @@
+[package]
+name = "xuanyan-std"
+entry = "src/lib.xy"

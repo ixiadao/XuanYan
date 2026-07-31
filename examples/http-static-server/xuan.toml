@@ -1,0 +1,7 @@
+[package]
+name = "http-static-server"
+entry = "main.xy"
+
+[dependencies]
+std = { path = "../../stdlib" }
+http = { path = "../../packages/http" }

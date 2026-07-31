@@ -1,0 +1,56 @@
+name: 语言与工具建议
+description: 提交语法、诊断、标准库、包、LSP、文档或外围工具建议
+title: "[建议] "
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: 建议范围
+      options:
+        - 语法与语义
+        - 所有权与借用
+        - 中文诊断
+        - 标准库
+        - HTTP 包
+        - CLI
+        - LSP
+        - 文档
+        - 编辑器或外围工具
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: 要解决的问题
+      description: 先说明真实使用障碍，不要只给功能名称。
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: 最小示例或工作流
+      description: 语言建议提供玄言源码；CLI、LSP、文档或工具建议提供最短操作步骤。
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 建议方案
+      description: 涉及公开名称时，请同时审查同领域现有名称和副作用语义。
+    validations:
+      required: true
+  - type: textarea
+    id: boundaries
+    attributes:
+      label: 边界与取舍
+      description: 说明哪些情况必须支持，哪些范围可以暂不实现。
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: 提交确认
+      options:
+        - label: 我理解 Issue 讨论不是语言规范，正式语言参考和发布说明才构成公开承诺。
+          required: true

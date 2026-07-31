@@ -1,0 +1,6 @@
+导入 src::lib::HTTP状态文本;
+导入 src::lib::HTTP错误正文;
+
+公开 函数 HTTP稳定状态正确() -> 布尔 {
+    HTTP状态文本(200) == "OK" 且 HTTP状态文本(408) == "Request Timeout" 且 HTTP状态文本(431) == "Request Header Fields Too Large" 且 HTTP状态文本(501) == "Not Implemented" 且 HTTP状态文本(999) == "Internal Server Error" 且 HTTP错误正文(404) == "Not Found\n"
+}

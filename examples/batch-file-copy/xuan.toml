@@ -1,0 +1,6 @@
+[package]
+name = "batch-file-copy"
+entry = "main.xy"
+
+[dependencies]
+std = { path = "../../stdlib" }

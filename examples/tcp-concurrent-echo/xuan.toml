@@ -1,0 +1,6 @@
+[package]
+name = "tcp-concurrent-echo"
+entry = "main.xy"
+
+[dependencies]
+std = { path = "../../stdlib" }

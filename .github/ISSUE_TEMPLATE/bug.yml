@@ -1,0 +1,79 @@
+name: 缺陷报告
+description: 报告可复现的编译器、原生产物、标准库、HTTP 包或 LSP 问题
+title: "[缺陷] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请只提交不含密码、令牌、个人敏感信息和无权公开源码的最小复现。
+        安全问题请使用私密安全报告入口。
+  - type: input
+    id: version
+    attributes:
+      label: 玄言版本
+      description: 运行 `xuanyan --version` 后填写完整输出。
+      placeholder: xuanyan 0.1.x
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: 平台
+      options:
+        - Windows x86_64
+        - Linux x86_64
+        - 其他或未承诺平台
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: 问题范围
+      options:
+        - 检查
+        - 运行
+        - 构建
+        - 测试
+        - 格式化
+        - LSP
+        - 标准库
+        - HTTP 包
+        - 发布归档
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: 执行命令
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: 最小复现材料
+      description: 提供最小 `xuan.toml` 和 `.xy`、LSP 消息、归档操作或公开复现仓库。
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际结果
+      description: 包含完整中文诊断、标准输出、标准错误和退出状态。
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望结果
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: 提交确认
+      options:
+        - label: 我已使用当前公开技术预览复现，并删除了敏感或无权公开的内容。
+          required: true

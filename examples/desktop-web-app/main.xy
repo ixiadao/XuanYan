@@ -1,0 +1,122 @@
+导入 http::HTTP请求;
+导入 http::发送HTTP响应;
+导入 http::发送HTTP错误响应;
+导入 http::读取HTTP请求;
+导入 std::TCP监听器;
+导入 std::TCP监听器接受连接;
+导入 std::TCP监听器等待连接;
+导入 std::TCP监听器本地地址;
+导入 std::TCP连接;
+导入 std::TCP连接关闭发送;
+导入 std::创建原子整数;
+导入 std::原子整数;
+导入 std::原子整数写入;
+导入 std::原子整数复制;
+导入 std::原子整数读取;
+导入 std::启动线程;
+导入 std::列表;
+导入 std::列表创建;
+导入 std::建立TCP监听器;
+导入 std::文本到UTF8字节;
+导入 std::文本连接;
+导入 std::等待线程;
+导入 std::运行桌面网页窗口;
+
+函数 创建空值() -> 空 {}
+
+函数 页面内容() -> 结果<列表<字节>, 字符串> {
+    变量 页面 = "<!doctype html><html lang='zh-CN'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>玄言桌面回声台</title>";
+    页面 = 文本连接(页面, "<style>:root{color-scheme:light;font-family:'Microsoft YaHei UI','Segoe UI',sans-serif;color:#202522;background:#eef1ee}*{box-sizing:border-box}body{min-height:100vh;margin:0;display:grid;place-items:center;padding:24px}main{width:min(920px,100%);border:1px solid #c9ceca;background:#fff;box-shadow:0 18px 45px rgba(31,38,33,.1);overflow:hidden}header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;border-bottom:1px solid #dfe3df}h1{margin:0;font-size:20px;font-weight:650}.status{font-size:13px;color:#236f48}.workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.72fr);min-height:430px}.editor,.result{padding:22px}.editor{border-right:1px solid #dfe3df}label,.result h2{display:block;margin:0 0 10px;font-size:13px;font-weight:650;color:#4d5851}textarea{width:100%;min-height:250px;resize:vertical;border:1px solid #bfc6c0;border-radius:6px;padding:14px;font:15px/1.6 Consolas,'Microsoft YaHei UI',monospace;color:#202522;background:#fafbfa}textarea:focus,button:focus-visible{outline:3px solid rgba(47,143,91,.24);outline-offset:2px}.actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px}button{min-height:40px;border:0;border-radius:6px;padding:0 16px;background:#236f48;color:#fff;font:inherit;font-weight:650;cursor:pointer}button:hover{background:#195c3a}button:disabled{cursor:wait;opacity:.65}.metric{font-size:13px;color:#68716b}pre{min-height:290px;margin:0;padding:16px;overflow-wrap:anywhere;white-space:pre-wrap;border-left:3px solid #dd765e;background:#f8f5f3;color:#3d332f;font:14px/1.6 Consolas,'Microsoft YaHei UI',monospace}@media(max-width:720px){body{padding:12px;place-items:start center}.workspace{grid-template-columns:1fr}.editor{border-right:0;border-bottom:1px solid #dfe3df}header{align-items:flex-start;flex-direction:column}}</style></head>");
+    页面 = 文本连接(页面, "<body><main><header><h1>玄言桌面回声台</h1><span class='status' id='status'>连接检查中</span></header><section class='workspace'><div class='editor'><label for='payload'>请求正文</label><textarea id='payload'>你好，玄言原生桌面应用。</textarea><div class='actions'><button id='send' type='button'>发送请求</button><span class='metric' id='duration'>等待发送</span></div></div><div class='result'><h2>响应</h2><pre id='output' aria-live='polite'>尚无响应</pre></div></section></main>");
+    页面 = 文本连接(页面, "<script>const statusNode=document.querySelector('#status'),payloadNode=document.querySelector('#payload'),outputNode=document.querySelector('#output'),durationNode=document.querySelector('#duration'),sendButton=document.querySelector('#send');async function checkStatus(){try{const response=await fetch('/api/status');if(!response.ok)throw new Error(String(response.status));const value=await response.json();statusNode.textContent=value.runtime+' · HTTP/'+value.http}catch{statusNode.textContent='服务不可用'}}async function sendPayload(){sendButton.disabled=true;durationNode.textContent='发送中';const started=performance.now();try{const response=await fetch('/api/echo',{method:'POST',headers:{'Content-Type':'text/plain; charset=utf-8'},body:payloadNode.value});outputNode.textContent=await response.text();durationNode.textContent=response.status+' · '+Math.round(performance.now()-started)+' ms'}catch(error){outputNode.textContent=String(error);durationNode.textContent='请求失败'}finally{sendButton.disabled=false}}sendButton.addEventListener('click',sendPayload);checkStatus()</script></body></html>");
+    文本到UTF8字节(页面)
+}
+
+函数 处理请求(连接: 可变借用<TCP连接>, 请求: HTTP请求) -> 结果<布尔, 字符串> {
+    匹配 请求 {
+        HTTP请求 { 方法, 路径, 正文, 保持连接 } => {
+            令 是HEAD = 方法 == "HEAD";
+            如果 路径 == "/" {
+                如果 方法 != "GET" 且 非 是HEAD {
+                    发送HTTP错误响应(连接, 405, 真, 保持连接)?;
+                    返回 结果::成功(保持连接);
+                }
+                令 页面 = 页面内容()?;
+                发送HTTP响应(连接, 200, "text/html; charset=utf-8", 页面, 非 是HEAD, 保持连接)?;
+                返回 结果::成功(保持连接);
+            }
+            如果 路径 == "/api/status" {
+                如果 方法 != "GET" 且 非 是HEAD {
+                    发送HTTP错误响应(连接, 405, 真, 保持连接)?;
+                    返回 结果::成功(保持连接);
+                }
+                令 状态 = 文本到UTF8字节("{\"runtime\":\"native\",\"http\":\"1.1\",\"async\":false}\n")?;
+                发送HTTP响应(连接, 200, "application/json; charset=utf-8", 状态, 非 是HEAD, 保持连接)?;
+                返回 结果::成功(保持连接);
+            }
+            如果 路径 == "/api/echo" {
+                如果 方法 != "POST" {
+                    发送HTTP错误响应(连接, 405, 真, 保持连接)?;
+                    返回 结果::成功(保持连接);
+                }
+                发送HTTP响应(连接, 200, "text/plain; charset=utf-8", 正文, 真, 保持连接)?;
+                返回 结果::成功(保持连接);
+            }
+            发送HTTP错误响应(连接, 404, 非 是HEAD, 保持连接)?;
+            结果::成功(保持连接)
+        },
+    }
+}
+
+函数 处理连接(连接: TCP连接) -> 结果<空, 字符串> {
+    变量 当前连接 = 连接;
+    变量 缓冲区: 列表<字节> = 列表创建();
+    变量 继续读取 = 真;
+    当 继续读取 {
+        变量 请求 = HTTP请求 { 方法: "", 路径: "", 正文: 列表创建(), 保持连接: 假 };
+        令 读取状态 = 读取HTTP请求(当前连接, 缓冲区, 30000, 8192, 1048576, 请求);
+        如果 读取状态 == 0 {
+            TCP连接关闭发送(当前连接)?;
+            继续读取 = 假;
+            继续;
+        }
+        如果 读取状态 != 200 {
+            发送HTTP错误响应(当前连接, 读取状态, 真, 假)?;
+            继续读取 = 假;
+            继续;
+        }
+        继续读取 = 处理请求(当前连接, 请求)?;
+    }
+    结果::成功(创建空值())
+}
+
+函数 运行本地服务(监听器: TCP监听器, 停止标志: 原子整数) -> 结果<空, 字符串> {
+    变量 当前监听器 = 监听器;
+    当 原子整数读取(停止标志) == 0 {
+        如果 TCP监听器等待连接(当前监听器, 100)? {
+            令 连接 = TCP监听器接受连接(当前监听器)?;
+            令 任务 = 函数() -> 结果<空, 字符串> {
+                处理连接(连接)
+            };
+            令 _ = 启动线程(任务)?;
+        }
+    }
+    结果::成功(创建空值())
+}
+
+函数 主函数() -> 结果<空, 字符串> {
+    令 监听器 = 建立TCP监听器("127.0.0.1:0")?;
+    令 地址 = TCP监听器本地地址(监听器)?;
+    令 停止标志 = 创建原子整数(0);
+    令 服务停止标志 = 原子整数复制(停止标志);
+    令 服务任务 = 函数() -> 结果<空, 字符串> {
+        运行本地服务(监听器, 服务停止标志)
+    };
+    令 服务线程 = 启动线程(服务任务)?;
+    令 页面地址 = 文本连接("http://", 地址);
+    令 窗口结果 = 运行桌面网页窗口("玄言桌面应用", 页面地址, 960, 640);
+    原子整数写入(停止标志, 1);
+    令 服务结果 = 等待线程(服务线程);
+    窗口结果?;
+    服务结果
+}

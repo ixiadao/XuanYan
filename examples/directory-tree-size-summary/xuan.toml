@@ -1,0 +1,6 @@
+[package]
+name = "directory-tree-size-summary"
+entry = "main.xy"
+
+[dependencies]
+std = { path = "../../stdlib" }

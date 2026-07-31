@@ -1,0 +1,6 @@
+[package]
+name = "text-replace"
+entry = "main.xy"
+
+[dependencies]
+std = { path = "../../stdlib" }

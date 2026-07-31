@@ -1,0 +1,6 @@
+[package]
+name = "text-record"
+entry = "main.xy"
+
+[dependencies]
+std = { path = "../../stdlib" }

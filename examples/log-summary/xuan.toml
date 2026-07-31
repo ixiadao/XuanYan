@@ -1,0 +1,6 @@
+[package]
+name = "log-summary"
+entry = "main.xy"
+
+[dependencies]
+std = { path = "../../stdlib" }

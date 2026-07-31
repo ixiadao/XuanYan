@@ -1,0 +1,6 @@
+[package]
+name = "binary-filter"
+entry = "main.xy"
+
+[dependencies]
+std = { path = "../../stdlib" }

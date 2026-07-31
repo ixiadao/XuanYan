@@ -1,0 +1,6 @@
+[package]
+name = "batch-text-replace"
+entry = "main.xy"
+
+[dependencies]
+std = { path = "../../stdlib" }

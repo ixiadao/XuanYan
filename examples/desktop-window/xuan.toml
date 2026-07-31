@@ -1,0 +1,6 @@
+[package]
+name = "desktop-window"
+entry = "main.xy"
+
+[dependencies]
+std = { path = "../../stdlib" }

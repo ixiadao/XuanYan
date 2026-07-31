@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>玄言原生回声台</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Microsoft YaHei UI", "Segoe UI", sans-serif;
+      color: #202522;
+      background: #eef1ee;
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    main {
+      width: min(920px, 100%);
+      border: 1px solid #c9ceca;
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: 0 18px 45px rgba(31, 38, 33, 0.1);
+      overflow: hidden;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px;
+      border-bottom: 1px solid #dfe3df;
+    }
+    h1 { margin: 0; font-size: 20px; font-weight: 650; }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #4d5851;
+    }
+    .status::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #2f8f5b;
+    }
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 0.72fr);
+      min-height: 430px;
+    }
+    .editor, .result { padding: 22px; }
+    .editor { border-right: 1px solid #dfe3df; }
+    label, .result h2 {
+      display: block;
+      margin: 0 0 10px;
+      font-size: 13px;
+      font-weight: 650;
+      color: #4d5851;
+    }
+    textarea {
+      width: 100%;
+      min-height: 250px;
+      resize: vertical;
+      border: 1px solid #bfc6c0;
+      border-radius: 6px;
+      padding: 14px;
+      font: 15px/1.6 Consolas, "Microsoft YaHei UI", monospace;
+      color: #202522;
+      background: #fafbfa;
+    }
+    textarea:focus, button:focus-visible {
+      outline: 3px solid rgba(47, 143, 91, 0.24);
+      outline-offset: 2px;
+    }
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    button {
+      min-height: 40px;
+      border: 0;
+      border-radius: 6px;
+      padding: 0 16px;
+      background: #236f48;
+      color: #ffffff;
+      font: inherit;
+      font-weight: 650;
+      cursor: pointer;
+    }
+    button:hover { background: #195c3a; }
+    button:disabled { cursor: wait; opacity: 0.65; }
+    .metric { font-size: 13px; color: #68716b; }
+    canvas {
+      width: 100%;
+      height: 96px;
+      display: block;
+      border: 1px solid #dfe3df;
+      border-radius: 6px;
+      background: #f5f7f5;
+    }
+    pre {
+      min-height: 210px;
+      margin: 16px 0 0;
+      padding: 14px;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+      border-left: 3px solid #dd765e;
+      background: #f8f5f3;
+      color: #3d332f;
+      font: 14px/1.6 Consolas, "Microsoft YaHei UI", monospace;
+    }
+    footer {
+      display: flex;
+      gap: 20px;
+      padding: 12px 22px;
+      border-top: 1px solid #dfe3df;
+      color: #68716b;
+      font-size: 12px;
+    }
+    @media (max-width: 720px) {
+      body { padding: 12px; place-items: start center; }
+      .workspace { grid-template-columns: 1fr; }
+      .editor { border-right: 0; border-bottom: 1px solid #dfe3df; }
+      header, footer { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>玄言原生回声台</h1>
+      <span class="status" id="status">连接检查中</span>
+    </header>
+    <section class="workspace">
+      <div class="editor">
+        <label for="payload">请求正文</label>
+        <textarea id="payload">你好，玄言原生 HTTP。</textarea>
+        <div class="actions">
+          <button id="send" type="button">发送请求</button>
+          <span class="metric" id="duration">等待发送</span>
+        </div>
+      </div>
+      <div class="result">
+        <h2>响应</h2>
+        <canvas id="signal" width="560" height="192" role="img" aria-label="请求字节波形"></canvas>
+        <pre id="output" aria-live="polite">尚无响应</pre>
+      </div>
+    </section>
+    <footer>
+      <span>HTTP/1.1</span>
+      <span>玄言原生产物</span>
+      <span>阻塞式连接</span>
+    </footer>
+  </main>
+  <script>
+    const statusNode = document.querySelector("#status");
+    const payloadNode = document.querySelector("#payload");
+    const outputNode = document.querySelector("#output");
+    const durationNode = document.querySelector("#duration");
+    const sendButton = document.querySelector("#send");
+    const canvas = document.querySelector("#signal");
+    const context = canvas.getContext("2d");
+
+    function drawSignal(text) {
+      const bytes = new TextEncoder().encode(text || " ");
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.fillStyle = "#f5f7f5";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      const count = Math.min(bytes.length, 56);
+      const gap = 4;
+      const width = Math.max(4, (canvas.width - gap * (count + 1)) / count);
+      for (let index = 0; index < count; index += 1) {
+        const height = 24 + (bytes[index] / 255) * 132;
+        context.fillStyle = index % 2 ? "#dd765e" : "#2f8f5b";
+        context.fillRect(gap + index * (width + gap), canvas.height - height - 16, width, height);
+      }
+    }
+
+    async function checkStatus() {
+      try {
+        const response = await fetch("/api/status");
+        if (!response.ok) throw new Error(String(response.status));
+        const value = await response.json();
+        statusNode.textContent = `${value.runtime} · HTTP/${value.http}`;
+      } catch {
+        statusNode.textContent = "服务不可用";
+      }
+    }
+
+    async function sendPayload() {
+      const payload = payloadNode.value;
+      drawSignal(payload);
+      sendButton.disabled = true;
+      durationNode.textContent = "发送中";
+      const started = performance.now();
+      try {
+        const response = await fetch("/api/echo", {
+          method: "POST",
+          headers: { "Content-Type": "text/plain; charset=utf-8" },
+          body: payload,
+        });
+        const text = await response.text();
+        outputNode.textContent = text;
+        durationNode.textContent = `${response.status} · ${Math.round(performance.now() - started)} ms`;
+      } catch (error) {
+        outputNode.textContent = String(error);
+        durationNode.textContent = "请求失败";
+      } finally {
+        sendButton.disabled = false;
+      }
+    }
+
+    sendButton.addEventListener("click", sendPayload);
+    drawSignal(payloadNode.value);
+    checkStatus();
+  </script>
+</body>
+</html>
