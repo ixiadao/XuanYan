@@ -1,0 +1,97 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "玄言",
+  "scopeName": "source.xuanyan",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#types"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#operators"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.xuanyan",
+          "match": "//.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.xuanyan",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.xuanyan",
+              "match": "\\\\(?:[nrt\\\\'\"]|u\\{[0-9A-Fa-f]+\\})"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.xuanyan",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.xuanyan",
+              "match": "\\\\(?:[nrt\\\\'\"]|u\\{[0-9A-Fa-f]+\\})"
+            }
+          ]
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.xuanyan",
+          "match": "(?<![\\p{L}\\p{N}_])(?:公开|宿主|导入|函数|令|变量|常量|结构体|枚举|协议|实现|为|返回|如果|否则|当|遍历|在|循环|跳出|继续|匹配|且|或|非|自身|借用|可变借用)(?![\\p{L}\\p{N}_])"
+        },
+        {
+          "name": "constant.language.boolean.xuanyan",
+          "match": "(?<![\\p{L}\\p{N}_])(?:真|假)(?![\\p{L}\\p{N}_])"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "storage.type.xuanyan",
+          "match": "(?<![\\p{L}\\p{N}_])(?:空|布尔|字符|字符串|整数|小数|字节|有符号8|有符号16|有符号32|有符号64|无符号8|无符号16|无符号32|无符号64)(?![\\p{L}\\p{N}_])"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.xuanyan",
+          "match": "(?<![\\p{L}\\p{N}_])\\d+(?:\\.\\d+)?(?![\\p{L}\\p{N}_])"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.xuanyan",
+          "match": "->|=>|::|==|!=|<=|>=|&&|\\|\\||[+\\-*/%<>=!&|?.]"
+        }
+      ]
+    }
+  }
+}

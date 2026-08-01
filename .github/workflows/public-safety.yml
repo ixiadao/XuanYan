@@ -23,7 +23,7 @@ jobs:
           root = Path(".")
           expected = {
               ".github", "CONTRIBUTING.md", "LICENSE.md", "README.md",
-              "corelib", "docs", "examples", "packages", "stdlib",
+              "corelib", "docs", "editors", "examples", "packages", "stdlib",
           }
           actual = {path.name for path in root.iterdir() if path.name != ".git"}
           if actual != expected:

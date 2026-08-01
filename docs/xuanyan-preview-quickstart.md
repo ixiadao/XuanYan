@@ -10,8 +10,9 @@
 `SHA256SUMS.sig`：
 
 ```text
-xuanyan-v0.1.5-windows-x86_64.zip
-xuanyan-v0.1.5-linux-x86_64.tar.gz
+xuanyan-v0.1.6-windows-x86_64.zip
+xuanyan-v0.1.6-linux-x86_64.tar.gz
+xuanyan-v0.1.6-vscode.vsix
 ```
 
 发布签名使用独立 Ed25519 密钥。可信公钥文件是
@@ -29,7 +30,7 @@ SHA256:6O5UXW+dVTZyJOVJzHiKAsUGOTZF6hkhguoB+XqcCa4
 Windows PowerShell：
 
 ```powershell
-$archive = ".\xuanyan-v0.1.5-windows-x86_64.zip"
+$archive = ".\xuanyan-v0.1.6-windows-x86_64.zip"
 cmd /c "ssh-keygen -Y verify -f xuanyan-release-allowed-signers -I xuanyan-release -n xuanyan-release -s SHA256SUMS.sig < SHA256SUMS"
 $expected = ((Select-String -LiteralPath .\SHA256SUMS -SimpleMatch $archive.Substring(2)).Line -split "\s+")[0]
 $actual = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant()
@@ -45,8 +46,8 @@ ssh-keygen -Y verify \
   -I xuanyan-release \
   -n xuanyan-release \
   -s SHA256SUMS.sig < SHA256SUMS
-grep 'xuanyan-v0.1.5-linux-x86_64.tar.gz$' SHA256SUMS | sha256sum -c -
-tar -xzf xuanyan-v0.1.5-linux-x86_64.tar.gz
+grep 'xuanyan-v0.1.6-linux-x86_64.tar.gz$' SHA256SUMS | sha256sum -c -
+tar -xzf xuanyan-v0.1.6-linux-x86_64.tar.gz
 ```
 
 ## 2. 创建程序
@@ -55,7 +56,7 @@ tar -xzf xuanyan-v0.1.5-linux-x86_64.tar.gz
 
 ```text
 工作目录/
-  xuanyan-v0.1.5/
+  xuanyan-v0.1.6/
   hello/
     xuan.toml
     src/main.xy
@@ -69,7 +70,7 @@ name = "hello"
 entry = "src/main.xy"
 
 [dependencies]
-std = { path = "../xuanyan-v0.1.5/stdlib" }
+std = { path = "../xuanyan-v0.1.6/stdlib" }
 ```
 
 `hello/src/main.xy`：
@@ -88,10 +89,10 @@ Windows PowerShell：
 
 ```powershell
 cd .\hello
-..\xuanyan-v0.1.5\bin\xuanyan.exe --version
-..\xuanyan-v0.1.5\bin\xuanyan.exe 检查 .
-..\xuanyan-v0.1.5\bin\xuanyan.exe 运行 .
-..\xuanyan-v0.1.5\bin\xuanyan.exe 构建 . .\build\hello.exe
+..\xuanyan-v0.1.6\bin\xuanyan.exe --version
+..\xuanyan-v0.1.6\bin\xuanyan.exe 检查 .
+..\xuanyan-v0.1.6\bin\xuanyan.exe 运行 .
+..\xuanyan-v0.1.6\bin\xuanyan.exe 构建 . .\build\hello.exe
 .\build\hello.exe
 ```
 
@@ -99,10 +100,10 @@ Linux：
 
 ```bash
 cd hello
-../xuanyan-v0.1.5/bin/xuanyan --version
-../xuanyan-v0.1.5/bin/xuanyan 检查 .
-../xuanyan-v0.1.5/bin/xuanyan 运行 .
-../xuanyan-v0.1.5/bin/xuanyan 构建 . ./build/hello
+../xuanyan-v0.1.6/bin/xuanyan --version
+../xuanyan-v0.1.6/bin/xuanyan 检查 .
+../xuanyan-v0.1.6/bin/xuanyan 运行 .
+../xuanyan-v0.1.6/bin/xuanyan 构建 . ./build/hello
 ./build/hello
 ```
 
@@ -128,7 +129,23 @@ printf "1\n2\n" | ./bin/xuanyan 运行 ./examples/text-record
 
 示例应输出 `总和：3`。
 
-## 4. 后续使用
+## 4. VS Code 基础接入
+
+公开仓库的 `editors/vscode` 提供 MIT 许可的基础扩展源码，可以生成可离线安装的
+VSIX：
+
+```powershell
+cd editors/vscode
+npm ci
+npm test
+npm run package
+```
+
+在 VS Code 的扩展视图中选择“从 VSIX 安装”，然后把 `xuanyan.lsp.path` 设置为
+发布目录中 `bin/xuanyan-lsp[.exe]` 的绝对路径；也可以把该 `bin` 目录加入
+`PATH`。扩展不会下载工具链。
+
+## 5. 后续使用
 
 公开命令只有：
 
@@ -143,7 +160,8 @@ xuanyan 格式化 [--check|--write] <文件|目录|xuan.toml>
 本地包依赖使用 `xuan.toml` 中的相对 `path`，当前不需要账户、远程包仓库或联网安装。
 发布归档中的 HTTP 与 JSON 包分别位于 `packages/http` 和 `packages/json`；JSON 包
 同时提供严格完整文本解析和基于事件列表的文本生成。语言服务器
-`bin/xuanyan-lsp[.exe]` 通过标准 LSP `stdio` 通信。
+`bin/xuanyan-lsp[.exe]` 通过标准 LSP `stdio` 通信，VS Code 扩展只负责启动该进程
+和映射编辑器协议。
 
 遇到问题时，先确认版本、平台、命令和最小复现，再按
 [反馈指南](xuanyan-feedback.md) 提交。

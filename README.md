@@ -11,19 +11,21 @@ Rust 工具链。随着语言能力成熟，玄言将具备使用自身实现编
 当前版本承诺。
 
 当前技术预览面向 x86_64 Windows 与 Linux，使用时不需要账户、远程激活或远程
-包仓库。v0.1.5 提供阻塞式 HTTPS GET、严格 JSON 文本包，并将标准库源码按职责
-分域。
+包仓库。v0.1.6 提供阻塞式 HTTPS GET、严格 JSON 文本包、按职责分域的标准库源码
+和 VS Code 基础扩展。
 
 ## 下载
 
-当前版本：**v0.1.5**
+当前版本：**v0.1.6**
 
-- [Windows x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.1.5/xuanyan-v0.1.5-windows-x86_64.zip)
-  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.5/xuanyan-v0.1.5-windows-x86_64.zip.sha256)
-- [Linux x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.1.5/xuanyan-v0.1.5-linux-x86_64.tar.gz)
-  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.5/xuanyan-v0.1.5-linux-x86_64.tar.gz.sha256)
-- [签名校验清单](https://github.com/ixiadao/XuanYan/releases/download/v0.1.5/SHA256SUMS)
-  · [Ed25519 签名](https://github.com/ixiadao/XuanYan/releases/download/v0.1.5/SHA256SUMS.sig)
+- [Windows x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.1.6/xuanyan-v0.1.6-windows-x86_64.zip)
+  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.6/xuanyan-v0.1.6-windows-x86_64.zip.sha256)
+- [Linux x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.1.6/xuanyan-v0.1.6-linux-x86_64.tar.gz)
+  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.6/xuanyan-v0.1.6-linux-x86_64.tar.gz.sha256)
+- [VS Code 扩展](https://github.com/ixiadao/XuanYan/releases/download/v0.1.6/xuanyan-v0.1.6-vscode.vsix)
+  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.6/xuanyan-v0.1.6-vscode.vsix.sha256)
+- [签名校验清单](https://github.com/ixiadao/XuanYan/releases/download/v0.1.6/SHA256SUMS)
+  · [Ed25519 签名](https://github.com/ixiadao/XuanYan/releases/download/v0.1.6/SHA256SUMS.sig)
 
 下载、校验和第一个程序见
 [技术预览快速开始](docs/xuanyan-preview-quickstart.md)。
@@ -46,6 +48,7 @@ Rust 工具链。随着语言能力成熟，玄言将具备使用自身实现编
 - `packages/http`：玄言 HTTP/1.1 服务端基础包源码。
 - `packages/json`：有界严格 JSON 文本解析与生成包源码。
 - `corelib`：编译器识别的公开玄言声明，不是编译器核心实现。
+- `editors/vscode`：MIT 许可的 `.xy` 语法高亮与 LSP 客户端源码。
 
 ## 开放边界
 
@@ -58,7 +61,7 @@ Rust 工具链。随着语言能力成熟，玄言将具备使用自身实现编
 
 - [玄言 v0.1 语言参考](docs/xuanyan-v0.1-language-reference.md)
 - [技术预览已知限制](docs/xuanyan-preview-known-limitations.md)
-- [v0.1.5 发布说明](docs/releases/v0.1.5.md)
+- [v0.1.6 发布说明](docs/releases/v0.1.6.md)
 - [反馈指南](docs/xuanyan-feedback.md)
 - [安全报告](.github/SECURITY.md)
 

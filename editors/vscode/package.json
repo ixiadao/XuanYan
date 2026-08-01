@@ -1,0 +1,82 @@
+{
+  "name": "xuanyan",
+  "displayName": "玄言",
+  "description": "玄言语言的 VS Code 基础支持",
+  "version": "0.1.6",
+  "publisher": "ixiadao",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.91.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "玄言",
+    "xuanyan",
+    "中文编程"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ixiadao/XuanYan.git"
+  },
+  "main": "./extension.js",
+  "extensionKind": [
+    "workspace"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "xuanyan",
+        "aliases": [
+          "玄言",
+          "XuanYan"
+        ],
+        "extensions": [
+          ".xy"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "xuanyan",
+        "scopeName": "source.xuanyan",
+        "path": "./syntaxes/xuanyan.tmLanguage.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[xuanyan]": {
+        "editor.unicodeHighlight.nonBasicASCII": false
+      }
+    },
+    "configuration": {
+      "title": "玄言",
+      "properties": {
+        "xuanyan.lsp.path": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "xuanyan-lsp 可执行文件的绝对路径。留空时从 PATH 查找。"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "test": "node --test test/unit.test.js",
+    "test:extension": "node test/run-extension.js",
+    "package": "node -e \"require('node:fs').mkdirSync('dist', { recursive: true })\" && vsce package --out dist/xuanyan-vscode.vsix"
+  },
+  "dependencies": {
+    "vscode-languageclient": "10.1.0"
+  },
+  "devDependencies": {
+    "@vscode/test-electron": "3.1.0",
+    "@vscode/vsce": "3.9.2"
+  }
+}
