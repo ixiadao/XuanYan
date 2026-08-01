@@ -7,10 +7,9 @@
 - 语法与可观察语义以
   [`xuanyan-v0.1-language-reference.md`](xuanyan-v0.1-language-reference.md)
   为唯一事实来源。
-- 当前公开能力和平台边界以
-  [`releases/v0.1.3.md`](releases/v0.1.3.md) 与
-  [`xuanyan-preview-known-limitations.md`](xuanyan-preview-known-limitations.md)
-  为准。
+- 当前工作包与验收顺序以
+  [`xuanyan-rolling-roadmap.md`](xuanyan-rolling-roadmap.md) 为准。
+- 已完成方案只保留在 Git 历史中，不作为当前实现事实。
 
 ## 2. 产品管线
 
@@ -54,8 +53,8 @@
 - 包测试布尔入口返回真时状态为 0，返回假时由包服务保持既有 `RBE003` 诊断。
 
 小数文本和 Unicode 大小写转换使用随编译器保存的固定 x86_64 位置无关代码块。
-相关维护实现不进入用户程序的编译过程；用户执行 `运行`、`构建` 或 `测试` 时不会
-启动 `rustc`，也不存在第二产品编译管线。
+仓库中的 Rust 源码只用于维护该代码块；用户执行 `运行`、`构建` 或 `测试` 时不会
+启动 `rustc`，该维护源码也不构成第二产品编译管线。
 
 ## 4. 事实归属
 
@@ -137,9 +136,11 @@ CLI 只负责命令参数、输出通道、诊断文本和退出状态：
 - macOS：直接生成并执行 x86_64 Mach-O；当前只覆盖基础整数、整数结果和布尔
   包测试，其他宿主能力尚未接入 Darwin ABI。
 
-官方发布门禁覆盖核心语义、规范程序、二进制宿主 ABI、字段可见性和 LSP 协议边界。
-Windows 与 Linux 还运行完整原生后端、包工作流、CLI 和免源码本地安装门禁；
-x86_64 macOS 只运行 Mach-O 结构和当前基础闭环的定向原生门禁。
+快速门禁覆盖核心单元、规范、二进制宿主 ABI、字段可见性和 LSP 协议边界。
+Windows 与 Linux 还必须运行完整原生后端、包工作流、CLI 和本地安装门禁；
+x86_64 macOS 运行 Mach-O 结构和当前基础闭环的定向原生门禁。完整命令见
+[`CONTRIBUTING.md`](../CONTRIBUTING.md)，CI 配置见
+[`.github/workflows/ci.yml`](../.github/workflows/ci.yml)。
 
 每个工作包完成后都必须在 Windows 和 WSL2/Linux 验证、提交并做方向检查。macOS
 基础后端不包含跨编译抽象、兼容层或回退开关，后续 Darwin 宿主 ABI 与 AArch64

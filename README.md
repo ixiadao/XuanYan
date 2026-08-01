@@ -4,21 +4,30 @@
 
 # 玄言
 
-玄言是一门使用中文语法、中文类型名和中文诊断的静态类型编程语言。
-当前技术预览面向 x86_64 Windows 与 Linux，使用时不需要安装 Rust、Cargo 或
-rustc，也不需要账户、远程激活或远程包仓库。
+玄言是一门以中文作为第一设计语言的原生静态类型编程语言。它不是其他语言的中文
+翻译层；语法、公开命名、诊断、标准库和工具链均按中文表达习惯独立设计。
+当前编译器使用 Rust 实现，但用户程序由玄言自己的原生代码生成器编译，不依赖
+Rust 工具链。随着语言能力成熟，玄言将具备使用自身实现编译器的可能，但自举不是
+当前版本承诺。
+
+当前技术预览面向 x86_64 Windows 与 Linux，使用时不需要账户、远程激活或远程
+包仓库。
 
 ## 下载
 
-当前版本：**v0.1.3**
+当前版本：**v0.1.4**
 
-- [Windows x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.1.3/xuanyan-v0.1.3-windows-x86_64.zip)
-  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.3/xuanyan-v0.1.3-windows-x86_64.zip.sha256)
-- [Linux x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.1.3/xuanyan-v0.1.3-linux-x86_64.tar.gz)
-  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.3/xuanyan-v0.1.3-linux-x86_64.tar.gz.sha256)
+- [Windows x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.1.4/xuanyan-v0.1.4-windows-x86_64.zip)
+  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.4/xuanyan-v0.1.4-windows-x86_64.zip.sha256)
+- [Linux x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.1.4/xuanyan-v0.1.4-linux-x86_64.tar.gz)
+  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.4/xuanyan-v0.1.4-linux-x86_64.tar.gz.sha256)
+- [签名校验清单](https://github.com/ixiadao/XuanYan/releases/download/v0.1.4/SHA256SUMS)
+  · [Ed25519 签名](https://github.com/ixiadao/XuanYan/releases/download/v0.1.4/SHA256SUMS.sig)
 
 下载、校验和第一个程序见
 [技术预览快速开始](docs/xuanyan-preview-quickstart.md)。
+发布公钥指纹为
+`SHA256:6O5UXW+dVTZyJOVJzHiKAsUGOTZF6hkhguoB+XqcCa4`。
 
 ```xy
 导入 std::文本连接;
@@ -46,7 +55,7 @@ rustc，也不需要账户、远程激活或远程包仓库。
 
 - [玄言 v0.1 语言参考](docs/xuanyan-v0.1-language-reference.md)
 - [技术预览已知限制](docs/xuanyan-preview-known-limitations.md)
-- [v0.1.3 发布说明](docs/releases/v0.1.3.md)
+- [v0.1.4 发布说明](docs/releases/v0.1.4.md)
 - [反馈指南](docs/xuanyan-feedback.md)
 - [安全报告](.github/SECURITY.md)
 

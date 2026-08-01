@@ -4,11 +4,14 @@
 
 本文冻结玄言 v0.1 的源码语法和可观察语义。
 
+- 当前实现顺序和验收门禁以
+  [`../AGENTS.md`](../AGENTS.md) 指向的当前方案为准。
 - 编译管线和实现事实归属由
   [`xuanyan-v0.1-architecture.md`](xuanyan-v0.1-architecture.md) 说明。
 - 本文是语法、类型、控制流、错误处理和所有权规则的唯一事实来源。
-- 官方发布通过规范程序验证本文规定的成功值、诊断和释放顺序。
-- 当前实现、内部测试、旧样例和生成代码不能覆盖本文。
+- [`../crates/xuanyan-core/tests/spec/manifest.tsv`](../crates/xuanyan-core/tests/spec/manifest.tsv)
+  列出 35 个规范程序及其预期值、诊断或释放顺序。
+- 当前实现、旧测试、旧样例和生成的 Rust 代码不能覆盖本文。
 - 本文未声明的语法在 v0.1 中一律无效，不提供旧语法别名。
 
 ## 2. 源文件与词法

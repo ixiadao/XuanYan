@@ -1,0 +1,67 @@
+name: Public Source Boundary
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject private implementation and credentials
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path(".")
+          expected = {
+              ".github", "CONTRIBUTING.md", "LICENSE.md", "README.md",
+              "corelib", "docs", "examples", "packages", "stdlib",
+          }
+          actual = {path.name for path in root.iterdir() if path.name != ".git"}
+          if actual != expected:
+              raise SystemExit(f"unexpected top-level content: {sorted(actual)}")
+
+          forbidden_names = {"Cargo.lock", "Cargo.toml", "id_ed25519", "id_rsa"}
+          forbidden_suffixes = {
+              ".key", ".kdbx", ".p12", ".pdb", ".pem", ".pfx", ".ppk",
+              ".rlib", ".rmeta", ".rs",
+          }
+          markers = [
+              b"-----BEGIN " + b"OPENSSH PRIVATE KEY-----",
+              b"-----BEGIN " + b"PRIVATE KEY-----",
+              b"-----BEGIN " + b"RSA PRIVATE KEY-----",
+              b"-----BEGIN " + b"EC PRIVATE KEY-----",
+              b"gh" + b"p_",
+              b"github_" + b"pat_",
+              b"private-" + b"git",
+              b"ubuntu" + b"@",
+              b"ssh:" + b"//",
+          ]
+          allowed_ips = {b"0.0.0.0", b"127.0.0.1"}
+          ip_pattern = re.compile(rb"(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?![\d.])")
+
+          for path in root.rglob("*"):
+              if ".git" in path.parts:
+                  continue
+              if path.is_symlink():
+                  raise SystemExit(f"symlink is not allowed: {path}")
+              if not path.is_file():
+                  continue
+              if path.name in forbidden_names or path.suffix.lower() in forbidden_suffixes:
+                  raise SystemExit(f"private implementation file is not allowed: {path}")
+              data = path.read_bytes()
+              if any(marker in data for marker in markers):
+                  raise SystemExit(f"credential or private server marker found: {path}")
+              if path.suffix.lower() != ".svg":
+                  for match in ip_pattern.findall(data):
+                      if all(int(part) <= 255 for part in match.split(b".")) and match not in allowed_ips:
+                          raise SystemExit(f"external server address found: {path}")
+          PY

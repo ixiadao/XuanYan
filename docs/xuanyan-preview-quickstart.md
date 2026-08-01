@@ -1,22 +1,37 @@
 # 玄言技术预览快速开始
 
 玄言技术预览面向 x86_64 Windows 与 Linux。发布归档已经包含预编译 CLI、语言
-服务器、标准库和 HTTP 包；使用玄言不需要安装 Rust、Cargo 或 rustc。
+服务器、标准库、HTTP 包和可直接运行的 `examples/` 示例；使用玄言不需要安装
+Rust、Cargo 或 rustc。
 
 ## 1. 下载与校验
 
-从官方 GitHub Release 下载与系统匹配的归档及同名 `.sha256` 文件：
+从官方 GitHub Release 下载与系统匹配的归档、`SHA256SUMS` 和
+`SHA256SUMS.sig`：
 
 ```text
-xuanyan-v0.1.3-windows-x86_64.zip
-xuanyan-v0.1.3-linux-x86_64.tar.gz
+xuanyan-v0.1.4-windows-x86_64.zip
+xuanyan-v0.1.4-linux-x86_64.tar.gz
 ```
+
+发布签名使用独立 Ed25519 密钥。可信公钥文件是
+[`security/xuanyan-release-signing-key.pub`](security/xuanyan-release-signing-key.pub)，
+指纹为：
+
+```text
+SHA256:6O5UXW+dVTZyJOVJzHiKAsUGOTZF6hkhguoB+XqcCa4
+```
+
+先下载
+[`security/xuanyan-release-allowed-signers`](security/xuanyan-release-allowed-signers)，
+再验证 `SHA256SUMS` 的签名。
 
 Windows PowerShell：
 
 ```powershell
-$archive = ".\xuanyan-v0.1.3-windows-x86_64.zip"
-$expected = ((Get-Content "$archive.sha256") -split "\s+")[0]
+$archive = ".\xuanyan-v0.1.4-windows-x86_64.zip"
+cmd /c "ssh-keygen -Y verify -f xuanyan-release-allowed-signers -I xuanyan-release -n xuanyan-release -s SHA256SUMS.sig < SHA256SUMS"
+$expected = ((Select-String -LiteralPath .\SHA256SUMS -SimpleMatch $archive.Substring(2)).Line -split "\s+")[0]
 $actual = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant()
 if ($actual -ne $expected) { throw "SHA-256 校验失败" }
 Expand-Archive $archive -DestinationPath .
@@ -25,8 +40,13 @@ Expand-Archive $archive -DestinationPath .
 Linux：
 
 ```bash
-sha256sum -c xuanyan-v0.1.3-linux-x86_64.tar.gz.sha256
-tar -xzf xuanyan-v0.1.3-linux-x86_64.tar.gz
+ssh-keygen -Y verify \
+  -f xuanyan-release-allowed-signers \
+  -I xuanyan-release \
+  -n xuanyan-release \
+  -s SHA256SUMS.sig < SHA256SUMS
+grep 'xuanyan-v0.1.4-linux-x86_64.tar.gz$' SHA256SUMS | sha256sum -c -
+tar -xzf xuanyan-v0.1.4-linux-x86_64.tar.gz
 ```
 
 ## 2. 创建程序
@@ -35,7 +55,7 @@ tar -xzf xuanyan-v0.1.3-linux-x86_64.tar.gz
 
 ```text
 工作目录/
-  xuanyan-v0.1.3/
+  xuanyan-v0.1.4/
   hello/
     xuan.toml
     src/main.xy
@@ -49,7 +69,7 @@ name = "hello"
 entry = "src/main.xy"
 
 [dependencies]
-std = { path = "../xuanyan-v0.1.3/stdlib" }
+std = { path = "../xuanyan-v0.1.4/stdlib" }
 ```
 
 `hello/src/main.xy`：
@@ -68,10 +88,10 @@ Windows PowerShell：
 
 ```powershell
 cd .\hello
-..\xuanyan-v0.1.3\bin\xuanyan.exe --version
-..\xuanyan-v0.1.3\bin\xuanyan.exe 检查 .
-..\xuanyan-v0.1.3\bin\xuanyan.exe 运行 .
-..\xuanyan-v0.1.3\bin\xuanyan.exe 构建 . .\build\hello.exe
+..\xuanyan-v0.1.4\bin\xuanyan.exe --version
+..\xuanyan-v0.1.4\bin\xuanyan.exe 检查 .
+..\xuanyan-v0.1.4\bin\xuanyan.exe 运行 .
+..\xuanyan-v0.1.4\bin\xuanyan.exe 构建 . .\build\hello.exe
 .\build\hello.exe
 ```
 
@@ -79,10 +99,10 @@ Linux：
 
 ```bash
 cd hello
-../xuanyan-v0.1.3/bin/xuanyan --version
-../xuanyan-v0.1.3/bin/xuanyan 检查 .
-../xuanyan-v0.1.3/bin/xuanyan 运行 .
-../xuanyan-v0.1.3/bin/xuanyan 构建 . ./build/hello
+../xuanyan-v0.1.4/bin/xuanyan --version
+../xuanyan-v0.1.4/bin/xuanyan 检查 .
+../xuanyan-v0.1.4/bin/xuanyan 运行 .
+../xuanyan-v0.1.4/bin/xuanyan 构建 . ./build/hello
 ./build/hello
 ```
 
@@ -91,6 +111,22 @@ cd hello
 ```text
 你好，玄言
 ```
+
+归档内的示例已经使用包内相对路径，可以直接运行。例如在解压目录中：
+
+Windows PowerShell：
+
+```powershell
+"1`n2" | .\bin\xuanyan.exe 运行 .\examples\text-record
+```
+
+Linux：
+
+```bash
+printf "1\n2\n" | ./bin/xuanyan 运行 ./examples/text-record
+```
+
+示例应输出 `总和：3`。
 
 ## 4. 后续使用
 
