@@ -1,0 +1,7 @@
+[package]
+name = "https-json"
+entry = "main.xy"
+
+[dependencies]
+std = { path = "../../stdlib" }
+json = { path = "../../packages/json" }

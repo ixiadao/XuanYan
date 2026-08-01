@@ -1,8 +1,8 @@
 # 玄言技术预览快速开始
 
 玄言技术预览面向 x86_64 Windows 与 Linux。发布归档已经包含预编译 CLI、语言
-服务器、标准库、HTTP 包和可直接运行的 `examples/` 示例；使用玄言不需要安装
-Rust、Cargo 或 rustc。
+服务器、标准库、HTTP 包、JSON 包和可直接运行的 `examples/` 示例；使用玄言
+不需要安装 Rust、Cargo 或 rustc。
 
 ## 1. 下载与校验
 
@@ -10,8 +10,8 @@ Rust、Cargo 或 rustc。
 `SHA256SUMS.sig`：
 
 ```text
-xuanyan-v0.1.4-windows-x86_64.zip
-xuanyan-v0.1.4-linux-x86_64.tar.gz
+xuanyan-v0.1.5-windows-x86_64.zip
+xuanyan-v0.1.5-linux-x86_64.tar.gz
 ```
 
 发布签名使用独立 Ed25519 密钥。可信公钥文件是
@@ -29,7 +29,7 @@ SHA256:6O5UXW+dVTZyJOVJzHiKAsUGOTZF6hkhguoB+XqcCa4
 Windows PowerShell：
 
 ```powershell
-$archive = ".\xuanyan-v0.1.4-windows-x86_64.zip"
+$archive = ".\xuanyan-v0.1.5-windows-x86_64.zip"
 cmd /c "ssh-keygen -Y verify -f xuanyan-release-allowed-signers -I xuanyan-release -n xuanyan-release -s SHA256SUMS.sig < SHA256SUMS"
 $expected = ((Select-String -LiteralPath .\SHA256SUMS -SimpleMatch $archive.Substring(2)).Line -split "\s+")[0]
 $actual = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant()
@@ -45,8 +45,8 @@ ssh-keygen -Y verify \
   -I xuanyan-release \
   -n xuanyan-release \
   -s SHA256SUMS.sig < SHA256SUMS
-grep 'xuanyan-v0.1.4-linux-x86_64.tar.gz$' SHA256SUMS | sha256sum -c -
-tar -xzf xuanyan-v0.1.4-linux-x86_64.tar.gz
+grep 'xuanyan-v0.1.5-linux-x86_64.tar.gz$' SHA256SUMS | sha256sum -c -
+tar -xzf xuanyan-v0.1.5-linux-x86_64.tar.gz
 ```
 
 ## 2. 创建程序
@@ -55,7 +55,7 @@ tar -xzf xuanyan-v0.1.4-linux-x86_64.tar.gz
 
 ```text
 工作目录/
-  xuanyan-v0.1.4/
+  xuanyan-v0.1.5/
   hello/
     xuan.toml
     src/main.xy
@@ -69,7 +69,7 @@ name = "hello"
 entry = "src/main.xy"
 
 [dependencies]
-std = { path = "../xuanyan-v0.1.4/stdlib" }
+std = { path = "../xuanyan-v0.1.5/stdlib" }
 ```
 
 `hello/src/main.xy`：
@@ -88,10 +88,10 @@ Windows PowerShell：
 
 ```powershell
 cd .\hello
-..\xuanyan-v0.1.4\bin\xuanyan.exe --version
-..\xuanyan-v0.1.4\bin\xuanyan.exe 检查 .
-..\xuanyan-v0.1.4\bin\xuanyan.exe 运行 .
-..\xuanyan-v0.1.4\bin\xuanyan.exe 构建 . .\build\hello.exe
+..\xuanyan-v0.1.5\bin\xuanyan.exe --version
+..\xuanyan-v0.1.5\bin\xuanyan.exe 检查 .
+..\xuanyan-v0.1.5\bin\xuanyan.exe 运行 .
+..\xuanyan-v0.1.5\bin\xuanyan.exe 构建 . .\build\hello.exe
 .\build\hello.exe
 ```
 
@@ -99,10 +99,10 @@ Linux：
 
 ```bash
 cd hello
-../xuanyan-v0.1.4/bin/xuanyan --version
-../xuanyan-v0.1.4/bin/xuanyan 检查 .
-../xuanyan-v0.1.4/bin/xuanyan 运行 .
-../xuanyan-v0.1.4/bin/xuanyan 构建 . ./build/hello
+../xuanyan-v0.1.5/bin/xuanyan --version
+../xuanyan-v0.1.5/bin/xuanyan 检查 .
+../xuanyan-v0.1.5/bin/xuanyan 运行 .
+../xuanyan-v0.1.5/bin/xuanyan 构建 . ./build/hello
 ./build/hello
 ```
 
@@ -141,7 +141,9 @@ xuanyan 格式化 [--check|--write] <文件|目录|xuan.toml>
 ```
 
 本地包依赖使用 `xuan.toml` 中的相对 `path`，当前不需要账户、远程包仓库或联网安装。
-语言服务器 `bin/xuanyan-lsp[.exe]` 通过标准 LSP `stdio` 通信。
+发布归档中的 HTTP 与 JSON 包分别位于 `packages/http` 和 `packages/json`；JSON 包
+同时提供严格完整文本解析和基于事件列表的文本生成。语言服务器
+`bin/xuanyan-lsp[.exe]` 通过标准 LSP `stdio` 通信。
 
 遇到问题时，先确认版本、平台、命令和最小复现，再按
 [反馈指南](xuanyan-feedback.md) 提交。

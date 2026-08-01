@@ -11,18 +11,19 @@ Rust 工具链。随着语言能力成熟，玄言将具备使用自身实现编
 当前版本承诺。
 
 当前技术预览面向 x86_64 Windows 与 Linux，使用时不需要账户、远程激活或远程
-包仓库。
+包仓库。v0.1.5 提供阻塞式 HTTPS GET、严格 JSON 文本包，并将标准库源码按职责
+分域。
 
 ## 下载
 
-当前版本：**v0.1.4**
+当前版本：**v0.1.5**
 
-- [Windows x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.1.4/xuanyan-v0.1.4-windows-x86_64.zip)
-  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.4/xuanyan-v0.1.4-windows-x86_64.zip.sha256)
-- [Linux x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.1.4/xuanyan-v0.1.4-linux-x86_64.tar.gz)
-  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.4/xuanyan-v0.1.4-linux-x86_64.tar.gz.sha256)
-- [签名校验清单](https://github.com/ixiadao/XuanYan/releases/download/v0.1.4/SHA256SUMS)
-  · [Ed25519 签名](https://github.com/ixiadao/XuanYan/releases/download/v0.1.4/SHA256SUMS.sig)
+- [Windows x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.1.5/xuanyan-v0.1.5-windows-x86_64.zip)
+  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.5/xuanyan-v0.1.5-windows-x86_64.zip.sha256)
+- [Linux x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.1.5/xuanyan-v0.1.5-linux-x86_64.tar.gz)
+  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.5/xuanyan-v0.1.5-linux-x86_64.tar.gz.sha256)
+- [签名校验清单](https://github.com/ixiadao/XuanYan/releases/download/v0.1.5/SHA256SUMS)
+  · [Ed25519 签名](https://github.com/ixiadao/XuanYan/releases/download/v0.1.5/SHA256SUMS.sig)
 
 下载、校验和第一个程序见
 [技术预览快速开始](docs/xuanyan-preview-quickstart.md)。
@@ -42,12 +43,14 @@ Rust 工具链。随着语言能力成熟，玄言将具备使用自身实现编
 - `docs`：语言参考、架构说明、快速开始、已知限制和发布说明。
 - `examples`：可以直接运行的玄言示例。
 - `stdlib`：随技术预览提供的玄言标准库源码。
-- `packages/http`：玄言 HTTP/1.1 基础包源码。
-- `corelib`：编译器识别的核心玄言声明。
+- `packages/http`：玄言 HTTP/1.1 服务端基础包源码。
+- `packages/json`：有界严格 JSON 文本解析与生成包源码。
+- `corelib`：编译器识别的公开玄言声明，不是编译器核心实现。
 
 ## 开放边界
 
-玄言编译器和语言服务器以预编译二进制发布，其实现源码不在本仓库公开。
+玄言编译器和语言服务器以预编译二进制发布，其 Rust 实现源码、Cargo 工作区和
+内部构建配置不在本仓库公开，也不会通过 GitHub 分发。
 本仓库中的 `.xy`、示例和文档可以依照
 [玄言技术预览许可协议](LICENSE.md)使用、修改和分发。
 
@@ -55,7 +58,7 @@ Rust 工具链。随着语言能力成熟，玄言将具备使用自身实现编
 
 - [玄言 v0.1 语言参考](docs/xuanyan-v0.1-language-reference.md)
 - [技术预览已知限制](docs/xuanyan-preview-known-limitations.md)
-- [v0.1.4 发布说明](docs/releases/v0.1.4.md)
+- [v0.1.5 发布说明](docs/releases/v0.1.5.md)
 - [反馈指南](docs/xuanyan-feedback.md)
 - [安全报告](.github/SECURITY.md)
 
