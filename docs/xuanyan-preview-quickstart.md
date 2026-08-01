@@ -1,7 +1,8 @@
 # 玄言技术预览快速开始
 
 玄言技术预览面向 x86_64 Windows 与 Linux。发布归档已经包含预编译 CLI、语言
-服务器、标准库和 HTTP 包；使用玄言不需要安装 Rust、Cargo 或 rustc。
+服务器、标准库、HTTP 包和可直接运行的 `examples/` 示例；使用玄言不需要安装
+Rust、Cargo 或 rustc。
 
 ## 1. 下载与校验
 
@@ -91,6 +92,22 @@ cd hello
 ```text
 你好，玄言
 ```
+
+归档内的示例已经使用包内相对路径，可以直接运行。例如在解压目录中：
+
+Windows PowerShell：
+
+```powershell
+"1`n2" | .\bin\xuanyan.exe 运行 .\examples\text-record
+```
+
+Linux：
+
+```bash
+printf "1\n2\n" | ./bin/xuanyan 运行 ./examples/text-record
+```
+
+示例应输出 `总和：3`。
 
 ## 4. 后续使用
 
