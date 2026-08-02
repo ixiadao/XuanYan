@@ -11,28 +11,27 @@ Rust 工具链。随着语言能力成熟，玄言将具备使用自身实现编
 当前版本承诺。
 
 当前技术预览面向 x86_64 Windows 与 Linux，使用时不需要账户、远程激活或远程
-包仓库。v0.1.6 提供阻塞式 HTTPS GET、严格 JSON 文本包、按职责分域的标准库源码
-和 VS Code 基础扩展。
+包仓库。v0.1.7 提供有界 HTTPS 通用请求、严格 JSON 事件导航、VS Code 五命令
+工作流，以及每用户离线安装与卸载。
 
-## 开发状态
+## 当前版本
 
-当前可下载并经过签名的版本仍是 v0.1.6。v0.2.0 前的下一阶段能力已经在私有核心
-仓库完成，正在进入公开版本准备。为避免源码接口与已发布工具链不匹配，本仓库的
-标准库、普通包、示例和编辑器扩展暂时继续与 v0.1.6 保持一致；下一版会在免源码
-发布门禁通过后，同步公开组件和签名二进制。
+v0.1.7 的 Windows、Linux 工具链和 VS Code 扩展均提供独立 SHA-256 校验文件，
+并由同一份 Ed25519 签名清单覆盖。发布包不包含 Rust 源码、Cargo 工作区、PDB、
+私钥或服务器配置。
 
 ## 下载
 
-当前版本：**v0.1.6**
+当前版本：**v0.1.7**
 
-- [Windows x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.1.6/xuanyan-v0.1.6-windows-x86_64.zip)
-  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.6/xuanyan-v0.1.6-windows-x86_64.zip.sha256)
-- [Linux x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.1.6/xuanyan-v0.1.6-linux-x86_64.tar.gz)
-  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.6/xuanyan-v0.1.6-linux-x86_64.tar.gz.sha256)
-- [VS Code 扩展](https://github.com/ixiadao/XuanYan/releases/download/v0.1.6/xuanyan-v0.1.6-vscode.vsix)
-  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.6/xuanyan-v0.1.6-vscode.vsix.sha256)
-- [签名校验清单](https://github.com/ixiadao/XuanYan/releases/download/v0.1.6/SHA256SUMS)
-  · [Ed25519 签名](https://github.com/ixiadao/XuanYan/releases/download/v0.1.6/SHA256SUMS.sig)
+- [Windows x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.1.7/xuanyan-v0.1.7-windows-x86_64.zip)
+  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.7/xuanyan-v0.1.7-windows-x86_64.zip.sha256)
+- [Linux x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.1.7/xuanyan-v0.1.7-linux-x86_64.tar.gz)
+  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.7/xuanyan-v0.1.7-linux-x86_64.tar.gz.sha256)
+- [VS Code 扩展](https://github.com/ixiadao/XuanYan/releases/download/v0.1.7/xuanyan-v0.1.7-vscode.vsix)
+  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.1.7/xuanyan-v0.1.7-vscode.vsix.sha256)
+- [签名校验清单](https://github.com/ixiadao/XuanYan/releases/download/v0.1.7/SHA256SUMS)
+  · [Ed25519 签名](https://github.com/ixiadao/XuanYan/releases/download/v0.1.7/SHA256SUMS.sig)
 
 下载、校验和第一个程序见
 [技术预览快速开始](docs/xuanyan-preview-quickstart.md)。
@@ -68,7 +67,7 @@ Rust 工具链。随着语言能力成熟，玄言将具备使用自身实现编
 
 - [玄言 v0.1 语言参考](docs/xuanyan-v0.1-language-reference.md)
 - [技术预览已知限制](docs/xuanyan-preview-known-limitations.md)
-- [v0.1.6 发布说明](docs/releases/v0.1.6.md)
+- [v0.1.7 发布说明](docs/releases/v0.1.7.md)
 - [反馈指南](docs/xuanyan-feedback.md)
 - [安全报告](.github/SECURITY.md)
 

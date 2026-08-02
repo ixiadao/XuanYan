@@ -2,7 +2,7 @@
   "name": "xuanyan",
   "displayName": "玄言",
   "description": "玄言语言的 VS Code 基础支持",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "publisher": "ixiadao",
   "license": "MIT",
   "engines": {
@@ -26,7 +26,8 @@
   ],
   "capabilities": {
     "untrustedWorkspaces": {
-      "supported": true
+      "supported": "limited",
+      "description": "受限工作区只提供语言识别、语法高亮和语言服务，不执行玄言命令。"
     }
   },
   "contributes": {
@@ -58,13 +59,69 @@
     "configuration": {
       "title": "玄言",
       "properties": {
-        "xuanyan.lsp.path": {
+        "xuanyan.toolchain.path": {
           "type": "string",
           "default": "",
           "scope": "machine",
-          "description": "xuanyan-lsp 可执行文件的绝对路径。留空时从 PATH 查找。"
+          "description": "玄言工具链解压目录的绝对路径，其中应包含 bin/xuanyan 和 bin/xuanyan-lsp。留空时从 PATH 查找。"
         }
       }
+    },
+    "commands": [
+      {
+        "command": "xuanyan.check",
+        "title": "检查",
+        "category": "玄言"
+      },
+      {
+        "command": "xuanyan.run",
+        "title": "运行",
+        "category": "玄言"
+      },
+      {
+        "command": "xuanyan.build",
+        "title": "构建",
+        "category": "玄言"
+      },
+      {
+        "command": "xuanyan.test",
+        "title": "测试",
+        "category": "玄言"
+      },
+      {
+        "command": "xuanyan.format",
+        "title": "格式化",
+        "category": "玄言"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "xuanyan.check",
+          "when": "editorLangId == xuanyan && resourceScheme == file",
+          "group": "navigation@10"
+        },
+        {
+          "command": "xuanyan.run",
+          "when": "editorLangId == xuanyan && resourceScheme == file",
+          "group": "navigation@11"
+        },
+        {
+          "command": "xuanyan.build",
+          "when": "editorLangId == xuanyan && resourceScheme == file",
+          "group": "navigation@12"
+        },
+        {
+          "command": "xuanyan.test",
+          "when": "editorLangId == xuanyan && resourceScheme == file",
+          "group": "navigation@13"
+        },
+        {
+          "command": "xuanyan.format",
+          "when": "editorLangId == xuanyan && resourceScheme == file",
+          "group": "navigation@14"
+        }
+      ]
     }
   },
   "scripts": {
