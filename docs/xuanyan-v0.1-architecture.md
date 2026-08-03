@@ -7,9 +7,8 @@
 - 语法与可观察语义以
   [`xuanyan-v0.1-language-reference.md`](xuanyan-v0.1-language-reference.md)
   为唯一事实来源。
-- 当前公开版本边界以发布说明和
-  [`xuanyan-preview-known-limitations.md`](xuanyan-preview-known-limitations.md)
-  为准。
+- 当前工作包与验收顺序以
+  [`xuanyan-rolling-roadmap.md`](xuanyan-rolling-roadmap.md) 为准。
 - 已完成方案只保留在 Git 历史中，不作为当前实现事实。
 
 ## 2. 产品管线
@@ -54,8 +53,8 @@
 - 包测试布尔入口返回真时状态为 0，返回假时由包服务保持既有 `RBE003` 诊断。
 
 小数文本和 Unicode 大小写转换使用随编译器保存的固定 x86_64 位置无关代码块。
-私有实现中的 Rust 源码只用于维护该代码块；用户执行 `运行`、`构建` 或 `测试`
-时不会启动 `rustc`，该维护源码也不构成第二产品编译管线。
+仓库中的 Rust 源码只用于维护该代码块；用户执行 `运行`、`构建` 或 `测试` 时不会
+启动 `rustc`，该维护源码也不构成第二产品编译管线。
 
 ## 4. 事实归属
 

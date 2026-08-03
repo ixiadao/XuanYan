@@ -1,0 +1,6 @@
+[package]
+name = "mobile-preview"
+entry = "main.xy"
+
+[dependencies]
+std = { path = "../../stdlib" }

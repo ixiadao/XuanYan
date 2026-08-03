@@ -23,7 +23,8 @@ jobs:
           root = Path(".")
           expected = {
               ".github", "CONTRIBUTING.md", "LICENSE.md", "README.md",
-              "corelib", "docs", "editors", "examples", "packages", "stdlib",
+              "corelib", "docs", "editors", "examples", "packages",
+              "platforms", "stdlib",
           }
           actual = {path.name for path in root.iterdir() if path.name != ".git"}
           if actual != expected:
@@ -33,6 +34,17 @@ jobs:
           forbidden_suffixes = {
               ".key", ".kdbx", ".p12", ".pdb", ".pem", ".pfx", ".ppk",
               ".rlib", ".rmeta", ".rs",
+          }
+          forbidden_repository_suffixes = {
+              ".7z", ".a", ".apk", ".dll", ".dylib", ".enc", ".exe",
+              ".gz", ".hap", ".o", ".so", ".tar", ".wasm", ".zip",
+          }
+          public_platform_files = {
+              Path("platforms/mobile-preview/main.xy"),
+              Path("platforms/mobile-preview/xuan.toml"),
+          }
+          forbidden_native_suffixes = {
+              ".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp",
           }
           markers = [
               b"-----BEGIN " + b"OPENSSH PRIVATE KEY-----",
@@ -55,8 +67,14 @@ jobs:
                   raise SystemExit(f"symlink is not allowed: {path}")
               if not path.is_file():
                   continue
+              if path.parts and path.parts[0] == "platforms" and path not in public_platform_files:
+                  raise SystemExit(f"private mobile platform file is not allowed: {path}")
+              if path.suffix.lower() in forbidden_native_suffixes:
+                  raise SystemExit(f"native implementation source is not allowed: {path}")
               if path.name in forbidden_names or path.suffix.lower() in forbidden_suffixes:
                   raise SystemExit(f"private implementation file is not allowed: {path}")
+              if path.suffix.lower() in forbidden_repository_suffixes:
+                  raise SystemExit(f"archive or binary is not allowed: {path}")
               data = path.read_bytes()
               if any(marker in data for marker in markers):
                   raise SystemExit(f"credential or private server marker found: {path}")

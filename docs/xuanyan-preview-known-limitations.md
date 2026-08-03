@@ -2,8 +2,14 @@
 
 ## 平台
 
-- 公开技术预览只承诺 x86_64 Windows 与 Linux。
-- macOS 只有基础原生产物门禁，不属于当前公开发布承诺。
+- 公开工具链归档只提供 x86_64 Windows 与 Linux。
+- Android 与 HarmonyOS NEXT 是开发者技术预览：工具链只接受
+  `android-arm64-v8a` 与 `harmonyos-next-arm64-v8a` 两个固定移动平台名称，
+  生成 AArch64 ELF 共享库；官方 JNI、Node-API 和移动宿主适配保持私有并通过真机门禁。
+- 不公开移动平台壳源码，不提供商店签名 APK/HAP、自动移动 SDK 安装、任意
+  target triple、其他移动 ABI 或跨平台 UI 框架。
+- macOS 只有 x86_64 Mach-O 结构和基础产物测试，没有真机构建或运行证据，
+  不属于当前公开发布承诺，也不作为当前四平台路线的验收门禁。iOS 尚未接入。
 - 发布归档只提供每用户离线安装与卸载脚本，不提供系统范围安装、操作系统信任链
   代码签名、自动更新或降级机制。
 - Windows 桌面网页窗口需要系统 WebView2 Runtime。

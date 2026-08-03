@@ -1,8 +1,9 @@
 # 玄言技术预览快速开始
 
-玄言技术预览面向 x86_64 Windows 与 Linux。发布归档已经包含预编译 CLI、语言
-服务器、标准库、HTTP 包、JSON 包和可直接运行的 `examples/` 示例；使用玄言
-不需要安装 Rust、Cargo 或 rustc。
+玄言技术预览提供 x86_64 Windows 与 Linux 工具链归档。归档已经包含预编译 CLI、
+语言服务器、标准库、HTTP 包、JSON 包和可直接运行的 `examples/` 示例；使用玄言
+不需要安装 Rust、Cargo 或 rustc。工具链还可为 Android arm64-v8a 与 HarmonyOS
+NEXT arm64-v8a 生成移动共享库。
 
 ## 1. 下载与校验
 
@@ -10,9 +11,9 @@
 `SHA256SUMS.sig`：
 
 ```text
-xuanyan-v0.1.7-windows-x86_64.zip
-xuanyan-v0.1.7-linux-x86_64.tar.gz
-xuanyan-v0.1.7-vscode.vsix
+xuanyan-v0.2.0-windows-x86_64.zip
+xuanyan-v0.2.0-linux-x86_64.tar.gz
+xuanyan-v0.2.0-vscode.vsix
 ```
 
 发布签名使用独立 Ed25519 密钥。可信公钥文件是
@@ -30,7 +31,7 @@ SHA256:6O5UXW+dVTZyJOVJzHiKAsUGOTZF6hkhguoB+XqcCa4
 Windows PowerShell：
 
 ```powershell
-$archive = ".\xuanyan-v0.1.7-windows-x86_64.zip"
+$archive = ".\xuanyan-v0.2.0-windows-x86_64.zip"
 cmd /c "ssh-keygen -Y verify -f xuanyan-release-allowed-signers -I xuanyan-release -n xuanyan-release -s SHA256SUMS.sig < SHA256SUMS"
 $expected = ((Select-String -LiteralPath .\SHA256SUMS -SimpleMatch $archive.Substring(2)).Line -split "\s+")[0]
 $actual = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant()
@@ -46,20 +47,20 @@ ssh-keygen -Y verify \
   -I xuanyan-release \
   -n xuanyan-release \
   -s SHA256SUMS.sig < SHA256SUMS
-grep 'xuanyan-v0.1.7-linux-x86_64.tar.gz$' SHA256SUMS | sha256sum -c -
-tar -xzf xuanyan-v0.1.7-linux-x86_64.tar.gz
+grep 'xuanyan-v0.2.0-linux-x86_64.tar.gz$' SHA256SUMS | sha256sum -c -
+tar -xzf xuanyan-v0.2.0-linux-x86_64.tar.gz
 ```
 
 解压后可以直接从归档目录使用，也可以执行每用户离线安装。Windows：
 
 ```powershell
-.\xuanyan-v0.1.7\install.ps1
+.\xuanyan-v0.2.0\install.ps1
 ```
 
 Linux：
 
 ```bash
-./xuanyan-v0.1.7/install.sh
+./xuanyan-v0.2.0/install.sh
 ```
 
 安装不需要管理员权限或联网。脚本会输出 `std`、`http` 和 `json` 三条可直接写入
@@ -71,7 +72,7 @@ Linux：
 
 ```text
 工作目录/
-  xuanyan-v0.1.7/
+  xuanyan-v0.2.0/
   hello/
     xuan.toml
     src/main.xy
@@ -85,7 +86,7 @@ name = "hello"
 entry = "src/main.xy"
 
 [dependencies]
-std = { path = "../xuanyan-v0.1.7/stdlib" }
+std = { path = "../xuanyan-v0.2.0/stdlib" }
 ```
 
 如果已经执行离线安装，也可以把上面的相对路径替换为安装脚本输出的 `std` 绝对
@@ -107,10 +108,10 @@ Windows PowerShell：
 
 ```powershell
 cd .\hello
-..\xuanyan-v0.1.7\bin\xuanyan.exe --version
-..\xuanyan-v0.1.7\bin\xuanyan.exe 检查 .
-..\xuanyan-v0.1.7\bin\xuanyan.exe 运行 .
-..\xuanyan-v0.1.7\bin\xuanyan.exe 构建 . .\build\hello.exe
+..\xuanyan-v0.2.0\bin\xuanyan.exe --version
+..\xuanyan-v0.2.0\bin\xuanyan.exe 检查 .
+..\xuanyan-v0.2.0\bin\xuanyan.exe 运行 .
+..\xuanyan-v0.2.0\bin\xuanyan.exe 构建 . .\build\hello.exe
 .\build\hello.exe
 ```
 
@@ -118,10 +119,10 @@ Linux：
 
 ```bash
 cd hello
-../xuanyan-v0.1.7/bin/xuanyan --version
-../xuanyan-v0.1.7/bin/xuanyan 检查 .
-../xuanyan-v0.1.7/bin/xuanyan 运行 .
-../xuanyan-v0.1.7/bin/xuanyan 构建 . ./build/hello
+../xuanyan-v0.2.0/bin/xuanyan --version
+../xuanyan-v0.2.0/bin/xuanyan 检查 .
+../xuanyan-v0.2.0/bin/xuanyan 运行 .
+../xuanyan-v0.2.0/bin/xuanyan 构建 . ./build/hello
 ./build/hello
 ```
 
@@ -147,7 +148,20 @@ printf "1\n2\n" | ./bin/xuanyan 运行 ./examples/text-record
 
 示例应输出 `总和：3`。
 
-## 4. VS Code 基础接入
+## 4. 构建移动共享库
+
+移动技术预览只接受两个固定平台名称，并统一生成 AArch64 ELF 共享库：
+
+```powershell
+xuanyan 构建 --平台 android-arm64-v8a . .\libxuanyan.so
+xuanyan 构建 --平台 harmonyos-next-arm64-v8a . .\libxuanyan.so
+```
+
+公开仓库只提供普通 `.xy` 移动验收包，不公开官方 JNI、Node-API、生命周期、网络
+和移动宿主适配源码，也不提供商店签名 APK 或 HAP。上述平台壳继续在私有源码树中
+使用对应 SDK、签名配置和设备完成真机验收。
+
+## 5. VS Code 基础接入
 
 公开仓库的 `editors/vscode` 提供 MIT 许可的基础扩展源码，可以生成可离线安装的
 VSIX：
@@ -168,14 +182,14 @@ npm run package
 测试只接受本地包，构建产物写入目标目录的 `build` 子目录。受限工作区不执行
 这些命令。
 
-## 5. 后续使用
+## 6. 后续使用
 
 公开命令只有：
 
 ```text
 xuanyan 检查 <文件|包目录|xuan.toml>
 xuanyan 运行 <文件|包目录|xuan.toml> [入口函数名] [-- <程序参数>...]
-xuanyan 构建 <文件|包目录|xuan.toml> <输出文件> [入口函数名]
+xuanyan 构建 [--平台 <android-arm64-v8a|harmonyos-next-arm64-v8a>] <文件|包目录|xuan.toml> <输出文件> [入口函数名]
 xuanyan 测试 <包目录|xuan.toml>
 xuanyan 格式化 [--check|--write] <文件|目录|xuan.toml>
 ```
