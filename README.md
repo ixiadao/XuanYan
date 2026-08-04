@@ -51,11 +51,11 @@ v0.2.0 的 Windows、Linux 工具链和 VS Code 扩展均提供独立 SHA-256 �
 - `docs`：语言参考、架构说明、快速开始、已知限制和发布说明。
 - `examples`：可以直接运行的玄言示例。
 - `stdlib`：随技术预览提供的玄言标准库源码。
-- `packages/http`：玄言 HTTP/1.1 服务端基础包源码。
+- `packages/http`：玄言 HTTP/1.1 服务端基础包，以及标准库 HTTPS 请求的薄转发和响应头查询。
 - `packages/json`：有界严格 JSON 文本解析与生成包源码。
 - `corelib`：编译器识别的公开玄言声明，不是编译器核心实现。
 - `editors/vscode`：MIT 许可的 `.xy` 语法高亮与 LSP 客户端源码。
-- `platforms/mobile-preview`：Android 与 HarmonyOS NEXT 共用的普通玄言移动验收包。
+- `platforms/mobile-preview`：Android 与 HarmonyOS NEXT 共用的普通玄言四平台业务验收包。
 
 ## 开放边界
 

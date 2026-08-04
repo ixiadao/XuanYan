@@ -1,6 +1,28 @@
+导入 src::lib::HTTP响应头首值;
 导入 src::lib::HTTP状态文本;
 导入 src::lib::HTTP错误正文;
 
 公开 函数 HTTP稳定状态正确() -> 布尔 {
     HTTP状态文本(200) == "OK" 且 HTTP状态文本(408) == "Request Timeout" 且 HTTP状态文本(431) == "Request Header Fields Too Large" 且 HTTP状态文本(501) == "Not Implemented" 且 HTTP状态文本(999) == "Internal Server Error" 且 HTTP错误正文(404) == "Not Found\n"
+}
+
+公开 函数 HTTP响应头查询正确() -> 布尔 {
+    令 响应头 = "Content-Type: application/json\r\nSet-Cookie: first=1\r\nset-cookie: second=2\r\n";
+    令 内容类型正确 = 匹配 HTTP响应头首值(响应头, "content-type") {
+        可选::有值(值) => 值 == "application/json",
+        可选::空值 => 假,
+    };
+    令 首值正确 = 匹配 HTTP响应头首值(响应头, "SET-COOKIE") {
+        可选::有值(值) => 值 == "first=1",
+        可选::空值 => 假,
+    };
+    令 缺失正确 = 匹配 HTTP响应头首值(响应头, "x-missing") {
+        可选::有值(_) => 假,
+        可选::空值 => 真,
+    };
+    令 空名称正确 = 匹配 HTTP响应头首值(响应头, "") {
+        可选::有值(_) => 假,
+        可选::空值 => 真,
+    };
+    内容类型正确 且 首值正确 且 缺失正确 且 空名称正确
 }
