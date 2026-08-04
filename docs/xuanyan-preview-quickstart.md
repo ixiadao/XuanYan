@@ -11,9 +11,9 @@ NEXT arm64-v8a 生成移动共享库。
 `SHA256SUMS.sig`：
 
 ```text
-xuanyan-v0.2.0-windows-x86_64.zip
-xuanyan-v0.2.0-linux-x86_64.tar.gz
-xuanyan-v0.2.0-vscode.vsix
+xuanyan-v0.2.1-windows-x86_64.zip
+xuanyan-v0.2.1-linux-x86_64.tar.gz
+xuanyan-v0.2.1-vscode.vsix
 ```
 
 发布签名使用独立 Ed25519 密钥。可信公钥文件是
@@ -31,7 +31,7 @@ SHA256:6O5UXW+dVTZyJOVJzHiKAsUGOTZF6hkhguoB+XqcCa4
 Windows PowerShell：
 
 ```powershell
-$archive = ".\xuanyan-v0.2.0-windows-x86_64.zip"
+$archive = ".\xuanyan-v0.2.1-windows-x86_64.zip"
 cmd /c "ssh-keygen -Y verify -f xuanyan-release-allowed-signers -I xuanyan-release -n xuanyan-release -s SHA256SUMS.sig < SHA256SUMS"
 $expected = ((Select-String -LiteralPath .\SHA256SUMS -SimpleMatch $archive.Substring(2)).Line -split "\s+")[0]
 $actual = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant()
@@ -47,20 +47,20 @@ ssh-keygen -Y verify \
   -I xuanyan-release \
   -n xuanyan-release \
   -s SHA256SUMS.sig < SHA256SUMS
-grep 'xuanyan-v0.2.0-linux-x86_64.tar.gz$' SHA256SUMS | sha256sum -c -
-tar -xzf xuanyan-v0.2.0-linux-x86_64.tar.gz
+grep 'xuanyan-v0.2.1-linux-x86_64.tar.gz$' SHA256SUMS | sha256sum -c -
+tar -xzf xuanyan-v0.2.1-linux-x86_64.tar.gz
 ```
 
 解压后可以直接从归档目录使用，也可以执行每用户离线安装。Windows：
 
 ```powershell
-.\xuanyan-v0.2.0\install.ps1
+.\xuanyan-v0.2.1\install.ps1
 ```
 
 Linux：
 
 ```bash
-./xuanyan-v0.2.0/install.sh
+./xuanyan-v0.2.1/install.sh
 ```
 
 安装不需要管理员权限或联网。脚本会输出 `std`、`http` 和 `json` 三条可直接写入
@@ -72,7 +72,7 @@ Linux：
 
 ```text
 工作目录/
-  xuanyan-v0.2.0/
+  xuanyan-v0.2.1/
   hello/
     xuan.toml
     src/main.xy
@@ -86,7 +86,7 @@ name = "hello"
 entry = "src/main.xy"
 
 [dependencies]
-std = { path = "../xuanyan-v0.2.0/stdlib" }
+std = { path = "../xuanyan-v0.2.1/stdlib" }
 ```
 
 如果已经执行离线安装，也可以把上面的相对路径替换为安装脚本输出的 `std` 绝对
@@ -108,10 +108,10 @@ Windows PowerShell：
 
 ```powershell
 cd .\hello
-..\xuanyan-v0.2.0\bin\xuanyan.exe --version
-..\xuanyan-v0.2.0\bin\xuanyan.exe 检查 .
-..\xuanyan-v0.2.0\bin\xuanyan.exe 运行 .
-..\xuanyan-v0.2.0\bin\xuanyan.exe 构建 . .\build\hello.exe
+..\xuanyan-v0.2.1\bin\xuanyan.exe --version
+..\xuanyan-v0.2.1\bin\xuanyan.exe 检查 .
+..\xuanyan-v0.2.1\bin\xuanyan.exe 运行 .
+..\xuanyan-v0.2.1\bin\xuanyan.exe 构建 . .\build\hello.exe
 .\build\hello.exe
 ```
 
@@ -119,10 +119,10 @@ Linux：
 
 ```bash
 cd hello
-../xuanyan-v0.2.0/bin/xuanyan --version
-../xuanyan-v0.2.0/bin/xuanyan 检查 .
-../xuanyan-v0.2.0/bin/xuanyan 运行 .
-../xuanyan-v0.2.0/bin/xuanyan 构建 . ./build/hello
+../xuanyan-v0.2.1/bin/xuanyan --version
+../xuanyan-v0.2.1/bin/xuanyan 检查 .
+../xuanyan-v0.2.1/bin/xuanyan 运行 .
+../xuanyan-v0.2.1/bin/xuanyan 构建 . ./build/hello
 ./build/hello
 ```
 

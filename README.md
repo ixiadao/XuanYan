@@ -10,29 +10,29 @@
 Rust 工具链。随着语言能力成熟，玄言将具备使用自身实现编译器的可能，但自举不是
 当前版本承诺。
 
-当前开发主线已定型为 v0.2.1，最新已发布技术预览仍为 v0.2.0。
-v0.2.0 提供 x86_64 Windows 与 Linux 离线工具链，并可在这两个开发宿主上为
+当前开发主线和最新已发布技术预览均为 v0.2.1。
+v0.2.1 提供 x86_64 Windows 与 Linux 离线工具链，并可在这两个开发宿主上为
 Android arm64-v8a 与 HarmonyOS NEXT arm64-v8a 生成 AArch64 移动共享库。
 使用时不需要账户、远程激活或远程包仓库。
 
 ## 最新已发布版本
 
-v0.2.0 的 Windows、Linux 工具链和 VS Code 扩展均提供独立 SHA-256 校验文件，
+v0.2.1 的 Windows、Linux 工具链和 VS Code 扩展均提供独立 SHA-256 校验文件，
 并由同一份 Ed25519 签名清单覆盖。发布包不包含 Rust 源码、Cargo 工作区、PDB、
 私钥或服务器配置。
 
 ## 下载
 
-最新已发布版本：**v0.2.0**
+最新已发布版本：**v0.2.1**
 
-- [Windows x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.2.0/xuanyan-v0.2.0-windows-x86_64.zip)
-  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.2.0/xuanyan-v0.2.0-windows-x86_64.zip.sha256)
-- [Linux x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.2.0/xuanyan-v0.2.0-linux-x86_64.tar.gz)
-  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.2.0/xuanyan-v0.2.0-linux-x86_64.tar.gz.sha256)
-- [VS Code 扩展](https://github.com/ixiadao/XuanYan/releases/download/v0.2.0/xuanyan-v0.2.0-vscode.vsix)
-  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.2.0/xuanyan-v0.2.0-vscode.vsix.sha256)
-- [签名校验清单](https://github.com/ixiadao/XuanYan/releases/download/v0.2.0/SHA256SUMS)
-  · [Ed25519 签名](https://github.com/ixiadao/XuanYan/releases/download/v0.2.0/SHA256SUMS.sig)
+- [Windows x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.2.1/xuanyan-v0.2.1-windows-x86_64.zip)
+  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.2.1/xuanyan-v0.2.1-windows-x86_64.zip.sha256)
+- [Linux x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.2.1/xuanyan-v0.2.1-linux-x86_64.tar.gz)
+  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.2.1/xuanyan-v0.2.1-linux-x86_64.tar.gz.sha256)
+- [VS Code 扩展](https://github.com/ixiadao/XuanYan/releases/download/v0.2.1/xuanyan-v0.2.1-vscode.vsix)
+  · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.2.1/xuanyan-v0.2.1-vscode.vsix.sha256)
+- [签名校验清单](https://github.com/ixiadao/XuanYan/releases/download/v0.2.1/SHA256SUMS)
+  · [Ed25519 签名](https://github.com/ixiadao/XuanYan/releases/download/v0.2.1/SHA256SUMS.sig)
 
 下载、校验和第一个程序见
 [技术预览快速开始](docs/xuanyan-preview-quickstart.md)。
@@ -70,7 +70,7 @@ HarmonyOS NEXT Node-API、生命周期、网络和移动宿主适配源码同样
 
 - [玄言 v0.1 语言参考](docs/xuanyan-v0.1-language-reference.md)
 - [技术预览已知限制](docs/xuanyan-preview-known-limitations.md)
-- [v0.2.1 候选说明](docs/releases/v0.2.1.md)
+- [v0.2.1 发布说明](docs/releases/v0.2.1.md)
 - [v0.2.0 发布说明](docs/releases/v0.2.0.md)
 - [反馈指南](docs/xuanyan-feedback.md)
 - [安全报告](.github/SECURITY.md)
