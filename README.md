@@ -10,11 +10,12 @@
 Rust 工具链。随着语言能力成熟，玄言将具备使用自身实现编译器的可能，但自举不是
 当前版本承诺。
 
+当前开发主线已定型为 v0.2.1，最新已发布技术预览仍为 v0.2.0。
 v0.2.0 提供 x86_64 Windows 与 Linux 离线工具链，并可在这两个开发宿主上为
 Android arm64-v8a 与 HarmonyOS NEXT arm64-v8a 生成 AArch64 移动共享库。
 使用时不需要账户、远程激活或远程包仓库。
 
-## 当前版本
+## 最新已发布版本
 
 v0.2.0 的 Windows、Linux 工具链和 VS Code 扩展均提供独立 SHA-256 校验文件，
 并由同一份 Ed25519 签名清单覆盖。发布包不包含 Rust 源码、Cargo 工作区、PDB、
@@ -22,7 +23,7 @@ v0.2.0 的 Windows、Linux 工具链和 VS Code 扩展均提供独立 SHA-256 �
 
 ## 下载
 
-当前版本：**v0.2.0**
+最新已发布版本：**v0.2.0**
 
 - [Windows x86_64](https://github.com/ixiadao/XuanYan/releases/download/v0.2.0/xuanyan-v0.2.0-windows-x86_64.zip)
   · [SHA-256](https://github.com/ixiadao/XuanYan/releases/download/v0.2.0/xuanyan-v0.2.0-windows-x86_64.zip.sha256)
@@ -69,6 +70,7 @@ HarmonyOS NEXT Node-API、生命周期、网络和移动宿主适配源码同样
 
 - [玄言 v0.1 语言参考](docs/xuanyan-v0.1-language-reference.md)
 - [技术预览已知限制](docs/xuanyan-preview-known-limitations.md)
+- [v0.2.1 候选说明](docs/releases/v0.2.1.md)
 - [v0.2.0 发布说明](docs/releases/v0.2.0.md)
 - [反馈指南](docs/xuanyan-feedback.md)
 - [安全报告](.github/SECURITY.md)

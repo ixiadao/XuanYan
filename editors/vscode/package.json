@@ -2,7 +2,7 @@
   "name": "xuanyan",
   "displayName": "玄言",
   "description": "玄言语言的 VS Code 基础支持",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "ixiadao",
   "license": "MIT",
   "engines": {
